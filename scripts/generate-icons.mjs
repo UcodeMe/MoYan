@@ -163,6 +163,21 @@ function encodeIco(entries) {
   return Buffer.concat([header, dir, ...entries.map((entry) => entry.png)])
 }
 
+function encodeIcns(entries) {
+  const body = Buffer.concat(
+    entries.map((entry) => {
+      const head = Buffer.alloc(8)
+      head.write(entry.type, 0, 'ascii')
+      head.writeUInt32BE(entry.png.length + 8, 4)
+      return Buffer.concat([head, entry.png])
+    })
+  )
+  const header = Buffer.alloc(8)
+  header.write('icns', 0, 'ascii')
+  header.writeUInt32BE(body.length + 8, 4)
+  return Buffer.concat([header, body])
+}
+
 fs.mkdirSync(OUT, { recursive: true })
 for (const size of [1024, 512, 256, 128, 64, 32, 16]) {
   const name = size === 1024 ? 'icon.png' : `icon-${size}.png`
@@ -172,6 +187,15 @@ const icoSizes = [16, 32, 48, 64, 128, 256]
 fs.writeFileSync(
   path.join(OUT, 'icon.ico'),
   encodeIco(icoSizes.map((size) => ({ size, png: render(size) })))
+)
+fs.writeFileSync(
+  path.join(OUT, 'icon.icns'),
+  encodeIcns([
+    { type: 'ic07', png: render(128) },
+    { type: 'ic08', png: render(256) },
+    { type: 'ic09', png: render(512) },
+    { type: 'ic10', png: render(1024) }
+  ])
 )
 fs.copyFileSync(path.join(OUT, 'icon-32.png'), path.join(OUT, 'tray.png'))
 console.log('图标已生成:', OUT)

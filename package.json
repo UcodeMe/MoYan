@@ -7,19 +7,23 @@
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/check-node.mjs",
     "dev": "concurrently -k -n vite,electron -c cyan,magenta \"npm:dev:vite\" \"npm:dev:electron\"",
     "dev:vite": "vite",
     "dev:electron": "wait-on http://localhost:5173 && tsc -p tsconfig.electron.json && electron .",
+    "prebuild": "node scripts/check-node.mjs",
     "build": "vue-tsc --noEmit && vite build && tsc -p tsconfig.electron.json",
     "build:icons": "node scripts/generate-icons.mjs",
+    "predist:win": "node scripts/check-node.mjs",
     "dist": "npm run build && electron-builder",
     "dist:win": "npm run build && electron-builder --win",
     "dist:mac": "npm run build && electron-builder --mac",
     "typecheck": "vue-tsc --noEmit && tsc -p tsconfig.electron.json --noEmit"
   },
-  "dependencies": {
-    "vue": "^3.5.13"
+  "engines": {
+    "node": ">=18"
   },
+  "dependencies": {},
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
     "concurrently": "^9.1.2",
@@ -27,6 +31,7 @@
     "electron-builder": "^25.1.8",
     "typescript": "^5.7.2",
     "vite": "^6.0.5",
+    "vue": "^3.5.13",
     "vue-tsc": "^2.2.0",
     "wait-on": "^8.0.1"
   },
@@ -37,6 +42,9 @@
       "output": "release",
       "buildResources": "build"
     },
+    "compression": "maximum",
+    "npmRebuild": false,
+    "electronLanguages": ["zh-CN", "en-US"],
     "files": [
       "dist/**/*",
       "dist-electron/**/*",
@@ -44,8 +52,8 @@
     ],
     "extraResources": [
       {
-        "from": "build/icons",
-        "to": "icons"
+        "from": "build/icons/tray.png",
+        "to": "icons/tray.png"
       }
     ],
     "win": {
@@ -60,13 +68,14 @@
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true
+      "createDesktopShortcut": true,
+      "differentialPackage": false
     },
     "mac": {
       "target": [
         {
           "target": "dmg",
-          "arch": ["universal"]
+          "arch": ["arm64"]
         }
       ],
       "icon": "build/icons/icon.icns",

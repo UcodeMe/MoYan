@@ -470,7 +470,7 @@ onUnmounted(() => {
         </div>
 
         <div class="note-area">
-          <div class="note-label"><AppIcon name="text" /> 截图下方留白 · 输入说明文字（将拼接进图片）</div>
+          <div class="note-label"><AppIcon name="text" /> 输入说明文字（将拼接进图片）</div>
           <textarea
             v-model="noteText"
             spellcheck="false"

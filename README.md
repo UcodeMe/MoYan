@@ -38,9 +38,11 @@ npm run build    # 类型检查 + 构建渲染层与主进程
 ## 打包
 
 ```bash
-npm run dist:win   # Windows: NSIS 安装包（release/ 目录）
-npm run dist:mac   # macOS: DMG（需在 macOS 上执行）
+npm run dist:win   # Windows: NSIS 安装包（release/ 目录，约 65MB）
+npm run dist:mac   # macOS: DMG arm64（需在 macOS 上执行）
 ```
+
+体积优化：开启 NSIS 最大压缩、仅保留 zh-CN/en-US 语言包、`vue` 只参与构建打包不随 node_modules 进入安装包、资源目录仅保留托盘图标、mac 默认 arm64 单架构（如需 Intel 机器支持，将 `mac.target` 的 arch 改为 `["x64"]` 或 `["universal"]`）。Electron 应用体积下限由 Chromium 运行时决定，64MB 左右已接近 NSIS + maximum 压缩的极限。
 
 应用图标由 `scripts/generate-icons.mjs` 纯 Node 脚本生成（无第三方图像依赖），修改后执行 `npm run build:icons` 重新生成。
 
