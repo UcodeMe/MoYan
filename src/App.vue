@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { getCurrentWindow } from '@tauri-apps/api/window'
 import ClipboardView from './views/ClipboardView.vue'
 import SettingsView from './views/SettingsView.vue'
 import ScreenshotView from './views/ScreenshotView.vue'
 
 type Route = 'clipboard' | 'settings' | 'screenshot'
 
-const route = ref<Route>('clipboard')
+// Tauri：screenshot 窗口与主窗口加载同一前端，按窗口 label 判定初始视图
+const initialRoute: Route = getCurrentWindow().label === 'screenshot' ? 'screenshot' : 'clipboard'
+const route = ref<Route>(initialRoute)
 
 function syncRoute(): void {
   const value = window.location.hash.replace(/^#\/?/, '')

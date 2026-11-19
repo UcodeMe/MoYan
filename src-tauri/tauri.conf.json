@@ -1,0 +1,32 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "MoYan",
+  "version": "0.1.0",
+  "identifier": "MoYan",
+  "build": {
+    "beforeDevCommand": "npm run dev:vite",
+    "devUrl": "http://localhost:5173",
+    "beforeBuildCommand": "npm run build:vite",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["nsis"],
+    "icon": ["icons/icon.ico", "icons/icon.png"],
+    "windows": {
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper"
+      },
+      "nsis": {
+        "installMode": "both",
+        "languages": ["SimpChinese"]
+      }
+    }
+  }
+}
