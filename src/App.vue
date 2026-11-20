@@ -26,7 +26,11 @@ function onIpcNavigate(target: Route): void {
 }
 
 onMounted(() => {
-  syncRoute()
+  // 仅当 URL 带有显式 hash 时才同步路由（screenshot 窗口加载时无 hash，
+  // 必须保留按窗口 label 判定的初始路由，否则会被覆盖回 clipboard）
+  if (window.location.hash.replace(/^#\/?/, '')) {
+    syncRoute()
+  }
   window.addEventListener('hashchange', syncRoute)
   window.electronAPI.onNavigate(onIpcNavigate)
 })

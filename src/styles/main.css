@@ -134,6 +134,12 @@ button {
   color: var(--accent);
 }
 
+/* 窗口关闭按钮：悬停红色警示 */
+.btn-close:hover {
+  background: rgba(251, 113, 133, 0.14);
+  color: var(--danger);
+}
+
 .input {
   width: 100%;
   height: 34px;

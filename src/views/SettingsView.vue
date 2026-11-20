@@ -86,6 +86,10 @@ function goBack(): void {
   window.location.hash = '#/clipboard'
 }
 
+function hidePanel(): void {
+  window.electronAPI.hideWindow()
+}
+
 onMounted(async () => {
   const settings = await window.electronAPI.getSettings()
   Object.assign(form, settings)
@@ -108,6 +112,9 @@ onUnmounted(() => {
       <img class="logo" :src="logoUrl" alt="MoYan" />
       <strong>设置</strong>
       <span class="version">v{{ version }}</span>
+      <button class="btn-icon btn-close header-close" title="关闭面板" @click="hidePanel">
+        <AppIcon name="close" />
+      </button>
     </header>
 
     <div class="content">

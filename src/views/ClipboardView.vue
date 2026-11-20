@@ -139,6 +139,10 @@ function onKeydown(event: KeyboardEvent): void {
   }
 }
 
+function hidePanel(): void {
+  window.electronAPI.hideWindow()
+}
+
 function takeScreenshot(): void {
   window.electronAPI.takeScreenshot()
 }
@@ -179,6 +183,9 @@ onUnmounted(() => {
         </button>
         <button class="btn-icon" title="设置" @click="openSettings">
           <AppIcon name="settings" />
+        </button>
+        <button class="btn-icon btn-close" title="关闭面板" @click="hidePanel">
+          <AppIcon name="close" />
         </button>
       </div>
     </header>
